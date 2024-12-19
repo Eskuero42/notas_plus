@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('grado'); // Grado del curso
             $table->string('paralelo'); // Paralelo del curso
             $table->unsignedBigInteger('id_aula'); // clave foranea
+            $table->unsignedBigInteger('id_profesor');
             $table->timestamps();
 
             // Relación con la tabla aulas
             $table->foreign('id_aula')->references('id')->on('aulas')->onDelete('cascade');
+            $table->foreign('id_profesor')->references('id')->on('profesors')->onDelete('cascade');
         });
     }
 

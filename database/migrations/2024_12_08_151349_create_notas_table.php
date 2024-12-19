@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('notas', function (Blueprint $table) {
             $table->id(); // Llave primaria
-            $table->unsignedBigInteger('id_materia_profesor_curso'); //  foránea de materias_profesores_cursos
             $table->unsignedBigInteger('id_estudiante'); //  foránea de estudiantes
+            $table->unsignedBigInteger('id_materia'); //  foránea de trimestres
             $table->unsignedBigInteger('id_trimestre'); //  foránea de trimestres
             $table->integer('asistencia'); //  para asistencia
             $table->integer('tareas'); //  para tareas
@@ -22,10 +22,10 @@ return new class extends Migration
             $table->integer('final'); // Nota final
             $table->timestamps();
 
-            // Relación con la tabla materias_profesores_cursos
-            $table->foreign('id_materia_profesor_curso')->references('id')->on('materia_profesor_cursos')->onDelete('cascade');
             // Relación con la tabla estudiantes
             $table->foreign('id_estudiante')->references('id')->on('estudiantes')->onDelete('cascade');
+            // Relación con la tabla trimestres
+            $table->foreign('id_materia')->references('id')->on('materias')->onDelete('cascade');
             // Relación con la tabla trimestres
             $table->foreign('id_trimestre')->references('id')->on('trimestres')->onDelete('cascade');
         });

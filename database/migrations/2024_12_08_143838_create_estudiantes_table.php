@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('carnet')->unique(); // Carnet único
             $table->string('domicilio'); // Domicilio 
             $table->string('celular'); // Celular
+            $table->date('fecha_nacimiento');
             $table->unsignedBigInteger('id_curso'); //clave foranea
             $table->timestamps(); 
 

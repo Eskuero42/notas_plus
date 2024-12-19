@@ -2,7 +2,10 @@
 
 @section('title', 'Registro Escolar')
 
-@section('page-title', 'Lista de Estudiantes')
+@section('page-title')
+    <i class="fas fa-users"></i> Lista de Estudiantes
+@endsection
+
 
 @section('content')
     <section class="content">
@@ -138,6 +141,26 @@
                                             </div>
                                         </div>
 
+                                        <div class="row">
+                                            <!-- Columna 3: Domicilio y Curso -->
+                                            <div class="col-md-6">
+                                                <!-- Campo de fecha nacimiento -->
+                                                <div class="form-group">
+                                                    <label for="fecha_nacimiento"><i class="fas fa-calendar-day"></i>
+                                                        Fecha de nacimiento</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i
+                                                                    class="fas fa-calendar-day"></i></span>
+                                                        </div>
+                                                        <input type="date" class="form-control" id="fecha_nacimiento"
+                                                            name="fecha_nacimiento"
+                                                            placeholder="Ingrese la fecha de nacimiento" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                                 <i class="fas fa-times"></i> Cerrar
@@ -174,7 +197,16 @@
                     <div class="tab-content">
                         @foreach ($cursos as $index => $curso)
                             <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="curso{{ $curso->id }}">
-                                <h3>Curso: {{ $curso->grado }}</h3>
+                                <!-- Título del curso -->
+                                <h3 class="curso-titulo">Curso: {{ $curso->grado }}</h3>
+
+                                <!-- Información del profesor -->
+                                <div class="profesor-info bg-light">
+                                    <strong>Nombre del Profesor:</strong> {{ $curso->profesor->nombres }}<br>
+                                    <strong>Apellido del Profesor:</strong> {{ $curso->profesor->apellidos }}
+                                </div>
+
+                                <!-- Tabla -->
                                 <table id="tablaCurso{{ $curso->id }}"
                                     class="tablaCurso table table-bordered table-striped">
                                     <thead>
@@ -196,198 +228,232 @@
                                                 <td>{{ $estudiante->domicilio }}</td>
                                                 <td>{{ $estudiante->celular }}</td>
                                                 <td>
-                                                    <!-- Botón para editar -->
-                                                    <button class="btn btn-warning btn-sm mx-1" data-toggle="modal"
-                                                        data-target="#editarModal{{ $estudiante->id }}">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-
-                                                    <!-- Botón para eliminar -->
-                                                    <button class="btn btn-danger btn-sm mx-1" data-toggle="modal"
-                                                        data-target="#eliminarModal{{ $estudiante->id }}">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-
                                                     <!-- Botón para ver -->
-                                                    <button class="btn btn-info btn-sm mx-1" data-toggle="modal"
+                                                    <button class="btn btn-secondary mx-1" data-toggle="modal"
                                                         data-target="#verModal{{ $estudiante->id }}">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
+
+                                                    <!-- Botón para editar -->
+                                                    <button class="btn btn-warning btn-xl" data-toggle="modal"
+                                                        data-target="#editarModal{{ $estudiante->id }}">
+                                                        <i class="fas fa-pencil-alt text-white"></i>
+                                                    </button>
+
+                                                    <!-- Botón para eliminar -->
+                                                    <button class="btn btn-danger mx-1" data-toggle="modal"
+                                                        data-target="#eliminarModal{{ $estudiante->id }}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
-
-                                            <!-- Modal Editar -->
-                                            <div class="modal fade" id="editarModal{{ $estudiante->id }}" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel{{ $estudiante->id }}" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header bg-warning text-white">
-                                                            <h4 class="modal-title" id="editarModalLabel{{ $estudiante->id }}">
-                                                                <i class="fas fa-edit"></i> Editar Estudiante
-                                                            </h4>
-                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form action="{{ route('admin.estudiantes.actualizar', $estudiante->id) }}" method="POST">
-                                                            @csrf
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <!-- Columna 1: Nombres y Apellidos -->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label for="nombres"><i class="fas fa-user"></i> Nombres</label>
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                                                                </div>
-                                                                                <input type="text" name="nombres" class="form-control" value="{{ $estudiante->nombres }}" required>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                            
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label for="apellidos"><i class="fas fa-user"></i> Apellidos</label>
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                                                                </div>
-                                                                                <input type="text" name="apellidos" class="form-control" value="{{ $estudiante->apellidos }}" required>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                            
-                                                                <div class="row">
-                                                                    <!-- Columna 2: Carnet y Celular -->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label for="domicilio"><i class="fas fa-id-card"></i> Carnet</label>
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                                                                                </div>
-                                                                                <input type="number" name="carnet" class="form-control" value="{{ $estudiante->carnet }}" required>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                            
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label for="celular"><i class="fas fa-phone-alt"></i> Celular</label>
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
-                                                                                </div>
-                                                                                <input type="text" name="celular" class="form-control" value="{{ $estudiante->celular }}" required>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <!-- Columna 3: Domicilio y Curso -->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label for="domicilio"><i class="fas fa-home"></i> Domicilio</label>
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text"><i class="fas fa-home"></i></span>
-                                                                                </div>
-                                                                                <input type="text" name="domicilio" class="form-control" value="{{ $estudiante->domicilio }}" required>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                            
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label for="id_curso"><i class="fas fa-book"></i> Curso</label>
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text"><i class="fas fa-book"></i></span>
-                                                                                </div>
-                                                                                <select class="form-control" id="id_curso" name="id_curso" required>
-                                                                                    <option value="">Seleccione un curso</option>
-                                                                                    @foreach ($cursos as $curso)
-                                                                                        <option value="{{ $curso->id }}" 
-                                                                                                @if ($curso->id == $estudiante->id_curso) selected @endif>
-                                                                                            {{ $curso->grado }}
-                                                                                        </option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer justify-content-between">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                                    <i class="fas fa-times"></i> Cerrar
-                                                                </button>
-                                                                <button type="submit" class="btn btn-warning">
-                                                                    <i class="fas fa-save"></i> Guardar Cambios
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-
-                                            <!-- Modal Eliminar -->
-                                            <div class="modal fade" id="eliminarModal{{ $estudiante->id }}"
-                                                tabindex="-1" role="dialog"
-                                                aria-labelledby="eliminarModalLabel{{ $estudiante->id }}"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header bg-danger text-white">
-                                                            <h5 class="modal-title"
-                                                                id="eliminarModalLabel{{ $estudiante->id }}">
-                                                                <i class="fas fa-trash-alt"></i> Confirmar Eliminación
-                                                            </h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form
-                                                            action="{{ route('admin.estudiantes.eliminar', $estudiante->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <div class="modal-body text-center">
-                                                                <div class="mb-3">
-                                                                    <i
-                                                                        class="fas fa-exclamation-circle fa-3x text-warning"></i>
-                                                                </div>
-                                                                <p>¿Estás seguro de que deseas eliminar a este estudiante?
-                                                                </p>
-                                                                <div class="mb-3">
-                                                                    <i
-                                                                        class="fas fa-exclamation-triangle text-warning"></i>
-                                                                    <strong>Esta acción no se puede deshacer.</strong>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">
-                                                                    <i class="fas fa-times"></i> Cancelar
-                                                                </button>
-                                                                <button type="submit" class="btn btn-danger">
-                                                                    <i class="fas fa-trash"></i> Eliminar
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
+                            <!-- Modal Editar -->
+                            <div class="modal fade" id="editarModal{{ $estudiante->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="editarModalLabel{{ $estudiante->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-warning text-white">
+                                            <h4 class="modal-title text-white"
+                                                id="editarModalLabel{{ $estudiante->id }}">
+                                                <i class="fas fa-user-edit"></i> Editar Estudiante
+                                            </h4>
+                                            <button type="button" class="close text-white" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="{{ route('admin.estudiantes.actualizar', $estudiante->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <!-- Columna 1: Nombres y Apellidos -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="nombres"><i class="fas fa-user"></i>
+                                                                Nombres</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="fas fa-user"></i></span>
+                                                                </div>
+                                                                <input type="text" name="nombres" class="form-control"
+                                                                    value="{{ $estudiante->nombres }}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="apellidos"><i class="fas fa-user"></i>
+                                                                Apellidos</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="fas fa-user"></i></span>
+                                                                </div>
+                                                                <input type="text" name="apellidos"
+                                                                    class="form-control"
+                                                                    value="{{ $estudiante->apellidos }}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <!-- Columna 2: Carnet y Celular -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="domicilio"><i class="fas fa-id-card"></i>
+                                                                Carnet</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="fas fa-id-card"></i></span>
+                                                                </div>
+                                                                <input type="number" name="carnet" class="form-control"
+                                                                    value="{{ $estudiante->carnet }}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="celular"><i class="fas fa-phone-alt"></i>
+                                                                Celular</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="fas fa-phone-alt"></i></span>
+                                                                </div>
+                                                                <input type="text" name="celular" class="form-control"
+                                                                    value="{{ $estudiante->celular }}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <!-- Columna 3: Domicilio y Curso -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="domicilio"><i class="fas fa-home"></i>
+                                                                Domicilio</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="fas fa-home"></i></span>
+                                                                </div>
+                                                                <input type="text" name="domicilio"
+                                                                    class="form-control"
+                                                                    value="{{ $estudiante->domicilio }}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="id_curso"><i class="fas fa-book"></i>
+                                                                Curso</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="fas fa-book"></i></span>
+                                                                </div>
+                                                                <select class="form-control" id="id_curso"
+                                                                    name="id_curso" required>
+                                                                    <option value="">Seleccione un curso</option>
+                                                                    @foreach ($cursos as $curso)
+                                                                        <option value="{{ $curso->id }}"
+                                                                            @if ($curso->id == $estudiante->id_curso) selected @endif>
+                                                                            {{ $curso->grado }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="fecha_nacimiento"><i class="fas fa-user"></i>
+                                                                Fecha de nacimiento</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="fas fa-user"></i></span>
+                                                                </div>
+                                                                <input type="date" name="fecha_nacimiento"
+                                                                    class="form-control"
+                                                                    value="{{ $estudiante->fecha_nacimiento }}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-secondary text-white"
+                                                    data-dismiss="modal">
+                                                    <i class="fas fa-times"></i> Cerrar
+                                                </button>
+                                                <button type="submit" class="btn btn-warning text-white">
+                                                    <i class="fas fa-save"></i> Guardar Cambios
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Eliminar -->
+                            <div class="modal fade" id="eliminarModal{{ $estudiante->id }}" tabindex="-1"
+                                role="dialog" aria-labelledby="eliminarModalLabel{{ $estudiante->id }}"
+                                aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-danger text-white">
+                                            <h5 class="modal-title" id="eliminarModalLabel{{ $estudiante->id }}">
+                                                <i class="fas fa-trash-alt"></i> Confirmar Eliminación
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="{{ route('admin.estudiantes.eliminar', $estudiante->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="modal-body text-center">
+                                                <div class="mb-3">
+                                                    <i class="fas fa-exclamation-circle fa-3x text-warning"></i>
+                                                </div>
+                                                <p>¿Estás seguro de que deseas eliminar a este estudiante?
+                                                </p>
+                                                <div class="mb-3">
+                                                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                                                    <strong>Esta acción no se puede deshacer.</strong>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    <i class="fas fa-times"></i> Cancelar
+                                                </button>
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
                     </div>
+
                 </div>
             </div>
         </div>

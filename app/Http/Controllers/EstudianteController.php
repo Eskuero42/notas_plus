@@ -9,17 +9,24 @@ use Illuminate\Http\Request;
 class EstudianteController extends Controller
 {
     public function ListarEstudiantes()
-    {
-        // Obtener todos los alumnos de la base de datos
-        $estudiantes = Estudiante::all();
-        $cursos = Curso::all();
-        // Obtener todos los estudiantes agrupados por curso
-        $estudiantesPorCurso = Estudiante::with('curso') // Asegúrate de tener la relación 'curso' en tu modelo Estudiante
-            ->get()
-            ->groupBy('id_curso');
-        // Retornar la vista con los datos
+{
+    $estudiantes = Estudiante::all();
+    $cursos = Curso::all();
+    $estudiantesPorCurso = Estudiante::with('curso')->get()->groupBy('id_curso');
+    
+    $role = auth()->user()->role;
+
+    if ($role === 'admin') {
+        // Redirige a la vista de admin
         return view('admin.estudiantes.listar', compact('estudiantes', 'cursos', 'estudiantesPorCurso'));
+    } elseif ($role === 'user') {
+        // Redirige a la vista de usuario
+        return view('user.estudiantes.listar', compact('estudiantes', 'cursos', 'estudiantesPorCurso'));
     }
+
+    abort(403, 'No tienes acceso a esta sección.');
+}
+
 
     public function RegistrarEstudiantes(Request $request)
     {
@@ -32,6 +39,7 @@ class EstudianteController extends Controller
             'carnet' => $request->carnet,
             'domicilio' => $request->domicilio,
             'celular' => $request->celular,
+            'fecha_nacimiento' => $request->fecha_nacimiento,
             'id_curso' => $request->id_curso,
         ]);
 
@@ -44,8 +52,19 @@ class EstudianteController extends Controller
     {
         $estudiante = Estudiante::findOrFail($id);
         $estudiante->update($request->all());
-        return redirect()->route('admin.estudiantes.listar')->with('success', 'Estudiante actualizado correctamente');
+
+        $role = auth()->user()->role;
+    
+        // Redirigir según el rol
+        if ($role === 'admin') {
+            return redirect()->route('admin.estudiantes.listar')->with('success', 'Estudiante actualizado correctamente.');
+        } elseif ($role === 'user') {
+            return redirect()->route('user.estudiantes.listar')->with('success', 'Estudiante actualizado correctamente.');
+        }
+        
+        abort(403, 'No tienes acceso a esta acción.');
     }
+    
 
     // Eliminar estudiante
     public function eliminarEstudiante($id)

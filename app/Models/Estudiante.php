@@ -15,6 +15,7 @@ class Estudiante extends Model
         'carnet',
         'domicilio',
         'celular',
+        'fecha_nacimiento',
         'id_curso'
     ];
 

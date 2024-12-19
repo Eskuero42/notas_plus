@@ -1,0 +1,219 @@
+/* Archivo: custom.css */
+.main-sidebar {
+    background-color: #302282 !important; /* Cambia el fondo */
+    color: #ffffff !important; /* Cambia el color del texto */
+}
+
+.main-sidebar a {
+    color: #ffffff !important; /* Cambia el color de los enlaces */
+}
+
+.main-sidebar a:hover {
+    color: #f0f0f0 !important; /* Cambia el color de los enlaces al pasar el mouse */
+}
+
+/* Estilos personalizados para el navbar */
+.main-header.navbar {
+    background-color: #302282 !important;  /* Cambia al color de tu preferencia */
+    color: #ffffff !important;  /* Cambia el color del texto */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  /* Añade sombra opcional */
+}
+
+/* Estilos para los enlaces del navbar */
+.main-header.navbar a.nav-link {
+    color: #ffffff !important;  /* Cambia el color de los enlaces */
+}
+
+/* Efecto hover para los enlaces del navbar */
+.main-header.navbar a.nav-link:hover {
+    color: #d4d4d4 !important;  /* Color del texto al pasar el mouse */
+}
+
+/* Estilos para el menú desplegable */
+.main-header .navbar-nav .nav-item .dropdown-menu {
+    background-color: #343a40 !important;  /* Cambia el fondo del menú desplegable */
+    color: #ffffff !important;  /* Cambia el color del texto del menú */
+}
+
+/* Estilos para los elementos del menú desplegable */
+.main-header .navbar-nav .nav-item .dropdown-menu a.dropdown-item {
+    color: #ffffff !important;  /* Color del texto de las opciones */
+}
+
+/* Efecto hover para las opciones del menú desplegable */
+.main-header .navbar-nav .nav-item .dropdown-menu a.dropdown-item:hover {
+    background-color: #007bff !important;  /* Fondo al pasar el mouse */
+    color: #ffffff !important;  /* Texto al pasar el mouse */
+}
+
+/* Estilos para el encabezado de la página TITULO */
+.content-header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    color: #333333;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1px;
+}
+
+/*estilos para las tablas*/
+/* styles.css */
+
+/* General */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezado */
+.table thead th {
+    background-color: #302282; /* Color llamativo */
+    color: #ffffff;
+    padding: 12px 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 2px solid #1d164b;
+}
+
+/* Cuerpo */
+.table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Hover en filas */
+.table tbody tr:hover {
+    background-color: #30228233; /* Color suave y elegante */
+}
+
+/* Bordes */
+.table-bordered {
+    border: 1px solid #ddd;
+}
+
+/* Última fila sin borde inferior */
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Acciones */
+.table tbody td button {
+    border-radius: 5px;
+    padding: 6px 10px;
+}
+
+/************************************/
+/* styles.css */
+
+/* Personalización de los botones de DataTable */
+.dataTables_wrapper .dt-buttons {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.dataTables_wrapper .dt-buttons .btn {
+    padding: 8px 16px;
+    margin: 0 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #302282; /* Color de fondo para los botones */
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+/* Hover y enfoque */
+.dataTables_wrapper .dt-buttons .btn:hover,
+.dataTables_wrapper .dt-buttons .btn:focus {
+    background-color: #6A4C9C; /* Color más suave para hover */
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Iconos de los botones */
+.dataTables_wrapper .dt-buttons .btn i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+/* Estilo para el botón de Excel */
+.dataTables_wrapper .dt-buttons .btn.excel {
+    background-color: #28a745; /* Verde suave */
+}
+
+.dataTables_wrapper .dt-buttons .btn.excel:hover {
+    background-color: #218838;
+}
+
+/* Estilo para el botón de PDF */
+.dataTables_wrapper .dt-buttons .btn.pdf {
+    background-color: #dc3545; /* Rojo suave */
+}
+
+.dataTables_wrapper .dt-buttons .btn.pdf:hover {
+    background-color: #c82333;
+}
+
+/* Estilo para el botón de Imprimir */
+.dataTables_wrapper .dt-buttons .btn.print {
+    background-color: #007bff; /* Azul */
+}
+
+.dataTables_wrapper .dt-buttons .btn.print:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para el buscador */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    margin-right: 15px;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #302282;
+    outline: none;
+    box-shadow: 0 0 4px rgba(48, 34, 130, 0.5);
+}
+
+/* Estilo del contenedor de la tabla */
+.dataTables_wrapper {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Personalización de la tabla */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+/* Encabezado de la tabla */
+.table thead th {
+    background-color: #302282; /* Color de fondo encabezado */
+    color: #fff;
+    padding: 12px 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 2px solid #1d164b;
+}
+
+

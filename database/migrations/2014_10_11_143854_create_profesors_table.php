@@ -12,14 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('profesors', function (Blueprint $table) {
-            $table->id(); // Llave primaria
-            $table->string('nombres'); // Nombres 
-            $table->string('apellidos'); // Apellidos 
-            $table->string('carnet')->unique(); // Carnet único
-            $table->string('domicilio'); // Domicilio 
-            $table->string('celular'); // Celular
-            $table->string('correo'); // Correo
-            $table->timestamps(); 
+            $table->id();
+            $table->string('nombres'); 
+            $table->string('apellidos'); 
+            $table->string('carnet'); 
+            $table->string('domicilio'); 
+            $table->string('celular'); 
+            $table->string('correo'); 
+            $table->date('fecha_nacimiento');
+            $table->string('fotoProf')->nullable(); 
+            $table->timestamps();
         });
     }
 

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'AdminLTE')</title>
+    <title>Lumine Zise</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('img/recurso7.png') }}"type="image/x-icon">
 
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
@@ -22,8 +24,7 @@
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 
-
-
+    <link rel="stylesheet" href="{{ asset('styles/style.css') }}">
 
 </head>
 
@@ -75,62 +76,136 @@
     <!-- Toastr -->
     <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 
+    <!--SCRIPTS DE PAGINACION PDF ETC-->
     <script>
-        $(document).ready(function() {
-            $(".tablaCurso").each(function() {
-                $(this).DataTable({
-                    responsive: true,
-                    lengthChange: false,
-                    autoWidth: false,
-                    buttons: [{
-                            extend: "excel",
-                            text: '<i class="fas fa-file-excel"></i> Excel',
-                        },
-                        {
-                            extend: "pdf",
-                            text: '<i class="fas fa-file-pdf"></i> PDF',
-                        },
-                        {
-                            extend: "print",
-                            text: '<i class="fas fa-print"></i> Imprimir',
-                            title: 'Lista de estudiantes',
+       $(document).ready(function() {
+    $(".tablaCurso").each(function() {
+        const tabla = $(this);  // Referencia a la tabla actual
+
+        tabla.DataTable({
+            responsive: true,
+            lengthChange: false,
+            autoWidth: false,
+            buttons: [
+                {
+                    extend: "print",
+                    text: '<i class="fas fa-print"></i> Imprimir',
+                    className: 'btn btn-info',
+                    title: 'Lista de Profesores',  // Título dinámico para la impresión
+                    customize: function(win) {
+                        // Ocultar las columnas "Foto" y "Acciones" en la impresión
+                        const fotoIndex = $(win.document.body).find('table thead th').toArray().findIndex(function(th) {
+                            return $(th).text().trim() === "Foto";
+                        });
+                        const accionesIndex = $(win.document.body).find('table thead th').toArray().findIndex(function(th) {
+                            return $(th).text().trim() === "Acciones";
+                        });
+
+                        if (fotoIndex >= 0) {
+                            $(win.document.body).find('table tbody tr').each(function() {
+                                $(this).find('td').eq(fotoIndex).css("display", "none");
+                            });
+                            $(win.document.body).find('table thead th').eq(fotoIndex).css("display", "none");
                         }
-                    ],
-                    language: {
-                        search: "<i class='fas fa-search'></i>",
-                        searchPlaceholder: "Buscar...",
-                        emptyTable: "No hay datos disponibles en la tabla",
-                        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                        infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                        infoFiltered: "(filtrado de _MAX_ registros totales)",
-                        lengthMenu: "Mostrar _MENU_ registros",
-                        loadingRecords: "Cargando...",
-                        processing: "Procesando...",
-                        zeroRecords: "No se encontraron resultados",
-                        paginate: {
-                            first: "Primero",
-                            last: "Último",
-                            next: "Siguiente",
-                            previous: "Anterior"
+
+                        if (accionesIndex >= 0) {
+                            $(win.document.body).find('table tbody tr').each(function() {
+                                $(this).find('td').eq(accionesIndex).css("display", "none");
+                            });
+                            $(win.document.body).find('table thead th').eq(accionesIndex).css("display", "none");
                         }
                     }
-                }).buttons().container().appendTo($(this).closest('.dataTables_wrapper').find(
-                    '.col-md-6:eq(0)'));
-            });
-        });
+                },
+                {
+                    extend: "excel",
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-success',
+                    exportOptions: {
+                        columns: function (idx, data, node) {
+                            return idx !== 1 && idx !== 7; // Excluir las columnas "Foto" y "Acciones"
+                        }
+                    }
+                },
+                {
+                    extend: "pdf",
+                    text: '<i class="fas fa-file-pdf"></i> PDF',
+                    className: 'btn btn-danger',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    exportOptions: {
+                        columns: function (idx, data, node) {
+                            return idx !== 1 && idx !== 7; // Excluir las columnas "Foto" y "Acciones"
+                        }
+                    },
+                    customize: function(doc) {
+                        const header = doc.content[1].table.header[0];
+                        const fotoIndex = header.findIndex(function(cell) {
+                            return cell.text === "Foto"; 
+                        });
+
+                        const accionesIndex = header.findIndex(function(cell) {
+                            return cell.text === "Acciones";
+                        });
+
+                        if (fotoIndex >= 0) {
+                            header.splice(fotoIndex, 1);
+                            doc.content[1].table.body.forEach(function(row) {
+                                row.splice(fotoIndex, 1);
+                            });
+                        }
+
+                        if (accionesIndex >= 0) {
+                            header.splice(accionesIndex, 1);
+                            doc.content[1].table.body.forEach(function(row) {
+                                row.splice(accionesIndex, 1);
+                            });
+                        }
+
+                        // Personalización del estilo en el PDF
+                        doc.styles.tableHeader.alignment = 'center'; 
+                        doc.content[1].table.widths = ['5%', '15%', '25%', '20%', '20%', '15%']; // Ajustar el ancho de las columnas
+                    }
+                }
+            ],
+            language: {
+                search: "<i class='fas fa-search'></i>",
+                searchPlaceholder: "Buscar...",
+                emptyTable: "No hay datos disponibles en la tabla",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                lengthMenu: "Mostrar _MENU_ registros",
+                loadingRecords: "Cargando...",
+                processing: "Procesando...",
+                zeroRecords: "No se encontraron resultados",
+                paginate: {
+                    first: "Primero",
+                    last: "Último",
+                    next: "Siguiente",
+                    previous: "Anterior"
+                }
+            }
+        }).buttons().container().appendTo(
+            tabla.closest('.dataTables_wrapper').find('.col-md-6:eq(0)')
+        );
+    });
+});
+
     </script>
-
-    <!--FIN SCRIPTS DE PAGINACION PDF ETC-->
-
+    
+    
     <!--ALERTAS-->
     <script>
         $(document).ready(function() {
             @if (session('success'))
                 var Toast = Swal.mixin({
                     toast: true,
-                    position: 'top-end',
+                    position: 'center', // Cambié la posición a 'center' para que aparezca en el centro
                     showConfirmButton: false,
-                    timer: 3000
+                    timer: 2500,
+                    customClass: {
+                        popup: 'big-toast' // Agregar una clase personalizada para el tamaño
+                    }
                 });
 
                 Toast.fire({
@@ -140,6 +215,30 @@
             @endif
         });
     </script>
+
+    <style>
+        /* Estilo personalizado para hacer el toast más grande */
+        .big-toast {
+            font-size: 18px !important;
+            /* Ajusté el tamaño del texto a un valor más moderado */
+            padding: 15px !important;
+            /* Ajusta el padding para hacerlo más grande */
+            border-radius: 10px;
+            /* Redondea las esquinas */
+            background-color: #28a745 !important;
+            /* Color de fondo (verde, por ejemplo) */
+            color: #fff !important;
+            /* Color del texto */
+        }
+
+        /* Aumentar el tamaño del texto del mensaje */
+        .big-toast .swal2-title {
+            font-size: 20px !important;
+            /* Aseguramos un tamaño de texto más moderado */
+            color: #fff !important;
+            /* Asegurar que el texto sea blanco */
+        }
+    </style>
 
     <!-- CALENDARIO -->
     <script>

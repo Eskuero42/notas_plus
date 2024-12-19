@@ -19,10 +19,14 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('role')->default('user');
+            $table->unsignedBigInteger('id_personas')->nullable();
+            $table->foreign('id_personas')->references('id')->on('personas')->onDelete('cascade');
+            $table->unsignedBigInteger('id_profesor')->nullable(); // Nueva columna para Profesor
+            $table->foreign('id_profesor')->references('id')->on('profesors')->onDelete('cascade'); // Clave foránea hacia Profesors
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */

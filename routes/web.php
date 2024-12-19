@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AulaController;
+use App\Http\Controllers\CursoController;
 use App\Http\Controllers\EstudianteController;
+use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\ProfileController;
@@ -29,6 +32,10 @@ Route::get('/', function () {
     return view('principal');
 })->name('principal');
 
+/*
+Route::post('/registro-admin', [PersonaController::class, 'showForm'])
+    ->name('registro-admin');
+*/
 
 /** ADMIN */
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'role:admin']], function () {
@@ -43,24 +50,35 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
        (por ejemplo, '/registrarProfesor' en lugar de '/admin/registrarProfesor'). 
        Sin embargo todas las rutas mantienen el nombre 'admin.' */
 
-/* PERSONAS */
-    Route::get('/lista/personas', [PersonaController::class, 'ListarPersonas'])
-    ->name('personas.listar');
+    /* PERSONAS */
+    // Mostrar listado de personas
+    Route::get('/personas', [PersonaController::class, 'ListarPersonas'])
+        ->name('personas.listar');
 
-    Route::post('/personas', [PersonaController::class, 'RegistrarPersonas'])
-    ->name('personas.registrar');
+    Route::post('/cuenta/personas/{id}', [PersonaController::class, 'CrearCuentaPersonas'])
+        ->name('personas.crear.cuenta');
 
-    Route::post('/personas/{id}/crearcuenta', [PersonaController::class, 'CrearCuentaPersonas'])
-    ->name('personas.crearCuenta');    
-
-/*PROFESORES*/   
+    /*PROFESORES*/
     Route::get('/lista/profesores', [ProfesorController::class, 'ListarProfesores'])
         ->name('profesores.listar');
 
-    Route::get('/ver/profesores', [ProfesorController::class, 'VerProfesores'])
-       ->name('profesores.ver');
+    Route::get('/ver/profesores/{id}', [ProfesorController::class, 'VerProfesores'])
+        ->name('profesores.ver');
 
-/*ESTUDIANTES*/
+    Route::post('/lista/profesores/registrar', [ProfesorController::class, 'RegistrarProfesores'])
+        ->name('profesores.registrar');
+
+    Route::post('/profesor/actualizar/{id}', [ProfesorController::class, 'actualizarProfesor'])
+        ->name('profesores.actualizar');
+
+    Route::delete('/profesor/eliminar/{id}', [ProfesorController::class, 'eliminarProfesor'])
+        ->name('profesores.eliminar');
+
+    Route::post('/cuenta/profesor/{id}', [ProfesorController::class, 'CrearCuentaProfesor'])
+        ->name('profesor.crear.cuenta');
+
+
+    /*ESTUDIANTES*/
     Route::get('/lista/estudiantes', [EstudianteController::class, 'ListarEstudiantes'])
         ->name('estudiantes.listar');
 
@@ -68,11 +86,54 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
         ->name('estudiantes.registrar');
 
     Route::post('/estudiante/actualizar/{id}', [EstudianteController::class, 'actualizarEstudiante'])
-    ->name('estudiantes.actualizar');
+        ->name('estudiantes.actualizar');
 
     Route::delete('/estudiante/eliminar/{id}', [EstudianteController::class, 'eliminarEstudiante'])
-    ->name('estudiantes.eliminar');
+        ->name('estudiantes.eliminar');
 
+    /*AULAS*/
+    Route::get('/lista/aulas', [AulaController::class, 'ListarAulas'])
+        ->name('aulas.listar');
+
+    Route::get('/ver/aulas/{id}', [AulaController::class, 'VerAulas'])
+        ->name('aulas.ver');
+
+    Route::post('/aulas/actualizar/{id}', [AulaController::class, 'actualizarAula'])
+        ->name('aulas.actualizar');
+
+    Route::post('/lista/aulas/registrar', [AulaController::class, 'RegistrarAulas'])
+        ->name('aulas.registrar');
+
+    Route::delete('/aula/eliminar/{id}', [AulaController::class, 'eliminarAula'])
+        ->name('aulas.eliminar');
+
+    /*CURSOS*/
+    Route::get('/lista/cursos', [CursoController::class, 'ListarCursos'])
+        ->name('cursos.listar');
+
+    Route::post('/lista/cursos/registrar', [CursoController::class, 'RegistrarCursos'])
+        ->name('cursos.registrar');
+
+/*MATERIAS*/ 
+    Route::get('/lista/materias', [MateriaController::class, 'ListarMaterias'])
+        ->name('materias.listar');
+    
+    Route::post('/lista/materias/registrar', [MateriaController::class, 'RegistrarMaterias'])
+        ->name('materias.registrar');
+    
+    Route::post('/profesor/materias/{id}', [MateriaController::class, 'actualizarMateria'])
+        ->name('materias.actualizar');
+    
+    Route::delete('/materias/eliminar/{id}', [MateriaController::class, 'eliminarMateria'])
+        ->name('materias.eliminar');
+    
+    Route::get('/ver/materias/{id}', [MateriaController::class, 'VerMaterias'])
+        ->name('materias.ver');
+
+/*MATERIAS_PROFESORES*/ 
+    Route::post('/lista/materiaS/ver', [MateriaController::class, 'RegistrarMateriasProfesores'])
+        ->name('materia_profesor.registrar');
+    
 
 
     /***********************************************************************/
@@ -93,7 +154,16 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['auth', 'rol
        (por ejemplo, '/registrarProfesor' en lugar de '/admin/registrarProfesor').  
        Sin embargo todas las rutas mantienen el nombre 'user.' */
 
+    /*ESTUDIANTES*/
+    Route::get('/lista/estudiantes', [EstudianteController::class, 'ListarEstudiantes'])
+        ->name('estudiantes.listar');
+        
+    Route::post('/estudiante/actualizar/{id}', [EstudianteController::class, 'actualizarEstudiante'])
+        ->name('estudiantes.actualizar');
 
+    /*CURSOS*/
+    Route::get('/lista/cursos', [CursoController::class, 'ListarCursosu'])
+        ->name('cursos.listar');   
 
 
 

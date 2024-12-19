@@ -7,7 +7,9 @@
             </a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ url('/') }}" class="nav-link">Inicio</a>
+            <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                <i class="nav-icon fas fa-home"> Inicio</i> 
+            </a>
         </li>
     </ul>
 
@@ -16,16 +18,22 @@
         <!-- User Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-                <img src="dist/img/user2-160x160.jpg" alt="User Image" class="img-circle mr-2" style="width: 30px; height: 30px;">
-                <span>Alexander Pierce</span> <small class="text-muted ml-2">(Admin)</small>
+                <!-- Imagen para todos los usuarios -->
+                <img src="{{ asset('dist/img/user2-160x160.jpg') }}" alt="User Image" class="img-circle mr-2" style="width: 30px; height: 30px;">
+                <span style="color: white; font-weight: bold;">{{ Auth::user()->name }}</span>
+                <small class="text-muted ml-2" style="color: white; font-size: 0.9em;">
+                    ({{ Auth::user()->role }})
+                </small>
             </a>
+            
+               
             <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                {{--<a class="dropdown-item" href="#">
                     <i class="fas fa-user-circle mr-2"></i> Perfil
                 </a>
                 <a class="dropdown-item" href="#">
                     <i class="fas fa-cogs mr-2"></i> Configuración
-                </a>
+                </a>--}}
                 <div class="dropdown-divider"></div>
                 <form method="POST" action="{{ route('logout') }}" class="dropdown-item m-0 p-0">
                     @csrf
