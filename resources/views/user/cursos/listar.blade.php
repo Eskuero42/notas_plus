@@ -46,8 +46,8 @@
                                                     <label for="id_aula">Aula</label>
                                                     <select class="form-control" id="id_aula" name="id_aula" required>
                                                         <option value="">Seleccione un aula</option>
-                                                        @foreach ($aulas as $aula)
-                                                            <option value="{{ $aula->id }}">{{ $aula->nombres }}</option>
+                                                        @foreach ($materias as $materia)
+                                                            <option value="{{ $materia->id }}">{{ $materia->nombres }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -81,10 +81,10 @@
             <div class="card">
                 <div class="card-header p-2">
                     <ul class="nav nav-pills">
-                        @foreach ($aulas as $aula) <!-- Recorre todas las aulas -->
+                        @foreach ($materias as $materia) <!-- Recorre todas las aulas -->
                             <li class="nav-item">
-                                <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="#aula{{ $aula->id }}" data-toggle="tab">
-                                    {{ $aula->nombres }} <!-- Muestra el nombre del aula -->
+                                <a class="nav-link {{ $loop->first ? 'active' : '' }}" href="#aula{{ $materia->id }}" data-toggle="tab">
+                                    {{ $materia->nombres }} <!-- Muestra el nombre del aula -->
                                 </a>
                             </li>
                         @endforeach
@@ -92,10 +92,9 @@
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
-                        @foreach ($aulas as $aula) <!-- Recorre todas las aulas -->
-                            <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="aula{{ $aula->id }}">
-                                <h3>Aula: {{ $aula->nombres }}</h3>
-                                @foreach ($aula->cursos as $curso) <!-- Recorre los cursos de cada aula -->
+                        @foreach ($materias as $materia) <!-- Recorre todas las aulas -->
+                            <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="aula{{ $materia->id }}">
+                                @foreach ($cursos as $curso) <!-- Recorre los cursos de cada aula -->
                                     <h5>Curso: {{ $curso->grado }} {{ $curso->paralelo }}</h5>
                                     
                                     <!-- Mostrar el nombre del profesor debajo del nombre del curso -->
@@ -116,10 +115,12 @@
                                                 <th>Domicilio</th>
                                                 <th>Celular</th>
                                                 <th>Fecha de nacimiento</th>
+                                                <th>Nota final</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($curso->estudiantes as $estudiante) <!-- Recorre los estudiantes de cada curso -->
+                                               
                                                 <tr>
                                                     <td>{{ $estudiante->carnet }}</td>
                                                     <td>{{ $estudiante->nombres }}</td>
@@ -127,6 +128,13 @@
                                                     <td>{{ $estudiante->domicilio }}</td>
                                                     <td>{{ $estudiante->celular }}</td>
                                                     <td>{{ $estudiante->fecha_nacimiento}}</td>
+                                                    
+                                                    @foreach ($estudiante['nota'] as $nota)
+                                                    
+                                                        @if ($nota['id_materia']== $materia->id)
+                                                            <td>{{ $nota['final']}}</td>
+                                                        @endif
+                                                    @endforeach
                                                 </tr>
                                             @endforeach
                                         </tbody>

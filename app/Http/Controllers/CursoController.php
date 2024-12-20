@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Aula;
 use App\Models\Curso;
+use App\Models\Materia;
 use App\Models\Profesor;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class CursoController extends Controller
     public function ListarCursos()
     {
         // Obtiene todos los cursos con sus relaciones (aula y estudiantes)
-        $cursos = Curso::with(['aula', 'estudiantes'])->get();
+        $cursos = Curso::all();
 
         // Obtiene todas las aulas
         $aulas = Aula::all();
@@ -27,16 +28,21 @@ class CursoController extends Controller
     public function ListarCursosu()
     {
         // Obtiene todos los cursos con sus relaciones (aula y estudiantes)
-        $cursos = Curso::with(['aula', 'estudiantes'])->get();
-
+        $cursos = Curso::all();
+        $materias = Materia::all();
+        //dd($materias);exit;
         // Obtiene todas las aulas
         $aulas = Aula::all();
+        foreach($materias as $materia)
+        {
+
+        }
 
         // Obtiene todos los profesores
         $profesores = Profesor::all();
 
         // Retorna la vista con los datos de cursos, aulas y profesores
-        return view('user.cursos.listar', compact('cursos', 'aulas', 'profesores'));
+        return view('user.cursos.listar', compact('cursos', 'aulas', 'materias' , 'profesores'));
     }
 
     public function RegistrarCursos(Request $request)

@@ -24,5 +24,10 @@ class Estudiante extends Model
     {
         return $this->belongsTo(Curso::class, 'id_curso');
     }
+
+    public function nota()
+    {
+        return $this->hasMany(Nota::class, 'id_estudiante');
+    }
 }
 

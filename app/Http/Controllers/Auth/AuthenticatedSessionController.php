@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,19 +26,29 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // Autenticar al usuario
         $request->authenticate();
 
-        // Regenerar la sesión
+        $id = Auth::user()->id;
+        $adminData = User::find($id);
+        $username = $adminData->name;
+
         $request->session()->regenerate();
 
-        // Redirigir según el rol del usuario
-        $user = Auth::user();
-        if ($user->role == 'admin') {
-            return redirect()->route('admin.dashboard'); // Redirigir al dashboard de admin
+        $notification = array(
+            'message' => '' . $username . ' ingresaste al sistema.',
+            'alert-type' => 'info'
+        );
+
+        $url = '';
+        if ($request->user()->role === 'admin') {
+            $url = 'admin/dashboard';
+        } elseif ($request->user()->role === 'user') {
+            $url = 'user/dashboard';
         } else {
-            return redirect()->route('user.dashboard'); // Redirigir al dashboard de usuario
+            $url = '/dashboard';
         }
+
+        return redirect()->intended($url)->with($notification);
     }
 
     /**
