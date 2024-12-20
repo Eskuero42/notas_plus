@@ -32,10 +32,10 @@ Route::get('/', function () {
     return view('principal');
 })->name('principal');
 
-/*
+
 Route::post('/registro-admin', [PersonaController::class, 'showForm'])
     ->name('registro-admin');
-*/
+
 
 /** ADMIN */
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'role:admin']], function () {
