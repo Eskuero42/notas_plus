@@ -12,11 +12,84 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <!--boton de registrar-->
+                    <!-- Botón para abrir el modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-xl">
-                        <i class="fas fa-plus"></i>Registrar nueva Materia
-                    </button>
+                        <i class="fas fa-plus"></i> Registrar nueva Materia
+                    </button>     
+                
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal-xl" tabindex="-1" role="dialog" aria-labelledby="modal-xl-label" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <!-- Cabecera del modal -->
+                                <div class="modal-header bg-primary text-white">
+                                    <h4 class="modal-title"><i class="fas fa-book"></i> Registrar Materia</h4>
+                                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                
+                                <!-- Cuerpo del modal -->
+                                <div class="modal-body">
+                                    @php
+                                        // Simula las materias ya registradas
+                                        $materiasRegistradas = collect([
+                                            'Matemáticas',
+                                            'Historia',
+                                            'Ciencias Naturales'
+                                        ]);
+                
+                                        // Lista de todas las materias escolares
+                                        $todasMaterias = [
+                                            'Matemáticas',
+                                            'Lenguaje y literatura',
+                                            'Ciencias Naturales',
+                                            'Historia',
+                                            'Geografía',
+                                            'Educación Física',
+                                            'Arte',
+                                            'Música',
+                                            'Biología',
+                                            'Física',
+                                            'Química',
+                                            'Informática',
+                                            'Inglés',
+                                            'Religión',
+                                            'Cívica'
+                                        ];
+                                    @endphp
+                
+                                    <form action="{{ route('admin.materias.registrar') }}" method="POST">
+                                        @csrf
+                                        <div class="row">
+                                            <!-- Lista desplegable para seleccionar la materia -->
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="nombres">Materia</label>
+                                                    <select class="form-control" id="nombres" name="nombres" required>
+                                                        <option value="">Seleccione una materia</option>
+                
+                                                        <!-- Mostrar solo las materias que no están registradas -->
+                                                        @foreach ($todasMaterias as $materia)
+                                                            @if (!$materiasRegistradas->contains($materia))
+                                                                <option value="{{ $materia }}">{{ $materia }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                
+                                        <!-- Botón para enviar el formulario -->
+                                        <button type="submit" class="btn btn-primary">Registrar Materia</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
+                    
             </div>
         </div>
         <div class="col-md-12">

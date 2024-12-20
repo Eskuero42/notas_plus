@@ -11,105 +11,112 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <!-- /.REGISTRAR ESTUDIANTE -->
+                    <!-- /.REGISTRAR Curso -->
                     <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
                         <i class="fas fa-plus"></i> Registrar Curso
                     </a>
 
-                    <!-- /.MODAL REGISTRAR ESTUDIANTE -->
+                    <!-- /.MODAL REGISTRAR Curso -->
                     <div class="modal fade" id="modal-lg" tabindex="-1" role="dialog" aria-labelledby="modal-lg-label"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary text-white">
-                                    <h4 class="modal-title">
-                                        <i class="fas fa-user-plus"></i> Registrar Curso
-                                    </h4>
-                                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('admin.cursos.registrar') }}" method="POST">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="grado">Grado</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-graduation-cap"></i></span>
-                                                        </div>
-                                                        <input type="text" class="form-control" id="grado"
-                                                            name="grado" placeholder="Ingrese el grado del curso"
-                                                            required>
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h4 class="modal-title">
+                                    <i class="fas fa-user-plus"></i> Registrar Curso
+                                </h4>
+                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('admin.cursos.registrar') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <!-- Lista desplegable para el grado -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="grado">Grado</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-graduation-cap"></i></span>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="paralelo">Paralelo</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-columns"></i></span>
-                                                        </div>
-                                                        <input type="text" class="form-control" id="paralelo"
-                                                            name="paralelo" placeholder="Ingrese el paralelo del curso"
-                                                            required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="id_aula">Aula</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-door-open"></i></span>
-                                                        </div>
-                                                        <select class="form-control" id="id_aula" name="id_aula" required>
-                                                            <option value="">Seleccione un aula</option>
-                                                            @foreach ($aulas as $aula)
-                                                                @if ($aula->cursos->isEmpty())
-                                                                    <option value="{{ $aula->id }}">{{ $aula->nombres }}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="id_profesor">Profesor</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i
-                                                                    class="fas fa-chalkboard-teacher"></i></span>
-                                                        </div>
-                                                        <select class="form-control" id="id_profesor" name="id_profesor"
-                                                            required>
-                                                            <option value="">Seleccione un profesor</option>
-                                                            @foreach ($profesores as $profesor)
-                                                                @if ($profesor->cursos->isEmpty())
-                                                                    <option value="{{ $profesor->id }}">
-                                                                        {{ $profesor->nombres }} {{ $profesor->apellidos }}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                                    <select class="form-control" id="grado" name="grado" required>
+                                                        <option value="">Seleccione el grado del curso</option>
+                                                        <option value="Primer grado">Primer grado</option>
+                                                        <option value="Segundo grado">Segundo grado</option>
+                                                        <option value="Tercer grado">Tercer grado</option>
+                                                        <option value="Cuarto grado">Cuarto grado</option>
+                                                        <option value="Quinto grado">Quinto grado</option>
+                                                        <option value="Sexto grado">Sexto grado</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Registrar Curso</button>
-                                    </form>
-                                </div>
+
+                                        <!-- Campo para Paralelo -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="paralelo">Paralelo</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-columns"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="paralelo" name="paralelo"
+                                                        placeholder="Ingrese el paralelo del curso" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Campo para Aula -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="id_aula">Aula</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-door-open"></i></span>
+                                                    </div>
+                                                    <select class="form-control" id="id_aula" name="id_aula" required>
+                                                        <option value="">Seleccione un aula</option>
+                                                        @foreach ($aulas as $aula)
+                                                            @if ($aula->cursos->isEmpty())
+                                                                <option value="{{ $aula->id }}">{{ $aula->nombres }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Campo para Profesor -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="id_profesor">Profesor</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-chalkboard-teacher"></i></span>
+                                                    </div>
+                                                    <select class="form-control" id="id_profesor" name="id_profesor" required>
+                                                        <option value="">Seleccione un profesor</option>
+                                                        @foreach ($profesores as $profesor)
+                                                            @if ($profesor->cursos->isEmpty())
+                                                                <option value="{{ $profesor->id }}">
+                                                                    {{ $profesor->nombres }} {{ $profesor->apellidos }}
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Registrar Curso</button>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
+
 
                     <!-- /.FIN MODAL REGISTRAR ESTUDIANTE -->
                 </div>
